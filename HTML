@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>منصة توليد وفلترة الفيديو بالذكاء الاصطناعي</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #fff; text-align: center; padding: 50px; }
+        .card { background: #1e293b; padding: 30px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        input, button { margin: 15px 0; padding: 10px; font-size: 16px; border-radius: 6px; border: none; }
+        button { background: #3b82f6; color: white; cursor: pointer; }
+        button:hover { background: #2563eb; }
+        video { margin-top: 20px; max-width: 100%; border-radius: 8px; }
+        #loading { display: none; color: #fbbf24; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>تحويل الصورة إلى فيديو بجودة محسنة</h2>
+    <input type="file" id="imageInput" accept="image/*"><br>
+    <button onclick="uploadImage()">إنشاء الفيديو الآن</button>
+    
+    <p id="loading">جاري معالجة الصورة وتوليد الفيديو بأعلى جودة ممكنة، قد يستغرق ذلك بعض الوقت...</p>
+    
+    <br>
+    <video id="resultVideo" controls style="display:none;"></video>
+</div>
+
+<script>
+async function uploadImage() {
+    const fileInput = document.getElementById('imageInput');
+    const loading = document.getElementById('loading');
+    const videoElem = document.getElementById('resultVideo');
+    
+    if (fileInput.files.length === 0) {
+        alert("الرجاء اختيار صورة أولاً!");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    
+    loading.style.display = "block";
+    videoElem.style.display = "none";
+    
+    try {
+        const response = await fetch('http://localhost:8000/generate-video/', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) throw new Error("فشلت عملية التوليد في السيرفر");
+        
+        const blob = await response.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        
+        videoElem.src = videoUrl;
+        videoElem.style.display = "block";
+    } catch (error) {
+        alert("حدث خطأ: " + error.message);
+    } finally {
+        loading.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
