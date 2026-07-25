@@ -2,25 +2,68 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>منصة توليد وفلترة الفيديو بالذكاء الاصطناعي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vedtoria - AI Video Studio</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #fff; text-align: center; padding: 50px; }
-        .card { background: #1e293b; padding: 30px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        input, button { margin: 15px 0; padding: 10px; font-size: 16px; border-radius: 6px; border: none; }
-        button { background: #3b82f6; color: white; cursor: pointer; }
-        button:hover { background: #2563eb; }
-        video { margin-top: 20px; max-width: 100%; border-radius: 8px; }
-        #loading { display: none; color: #fbbf24; }
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: #0f172a;
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 { color: #38bdf8; margin-bottom: 10px; }
+        p.desc { color: #94a3b8; font-size: 14px; margin-bottom: 30px; }
+        input[type="file"] {
+            display: block;
+            margin: 0 auto 20px auto;
+            color: #cbd5e1;
+        }
+        button {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover { background: #0369a1; }
+        #loading {
+            display: none;
+            color: #fbbf24;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        video {
+            margin-top: 25px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>تحويل الصورة إلى فيديو بجودة محسنة</h2>
-    <input type="file" id="imageInput" accept="image/*"><br>
+<div class="container">
+    <h1>Vedtoria</h1>
+    <p class="desc">منصة ذكاء اصطناعي متطورة لتحويل الصور الثابتة إلى مقاطع فيديو ديناميكية وسلسة.</p>
+    
+    <input type="file" id="imageInput" accept="image/*">
+    <br>
     <button onclick="uploadImage()">إنشاء الفيديو الآن</button>
     
-    <p id="loading">جاري معالجة الصورة وتوليد الفيديو بأعلى جودة ممكنة، قد يستغرق ذلك بعض الوقت...</p>
+    <div id="loading">جاري معالجة الصورة وتوليد الفيديو بأعلى جودة، قد يستغرق ذلك بعض الوقت...</div>
     
     <br>
     <video id="resultVideo" controls style="display:none;"></video>
@@ -57,7 +100,7 @@ async function uploadImage() {
         videoElem.src = videoUrl;
         videoElem.style.display = "block";
     } catch (error) {
-        alert("حدث خطأ: " + error.message);
+        alert("حدث خطأ أثناء الاتصال بالسيرفر: تأكد من تشغيل ملف الـ Backend. التفاصيل: " + error.message);
     } finally {
         loading.style.display = "none";
     }
