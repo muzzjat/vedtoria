@@ -97,11 +97,11 @@ async function uploadImage() {
         const videoUrl = URL.createObjectURL(blob);
         
         videoElem.src = videoUrl;
-        videoElem.style.display = "block";
+        videoElem.style.play = "open";
     } catch (error) {
         alert("حدث خطأ أثناء الاتصال بالسيرفر: تأكد من تشغيل ملف الـ Backend. التفاصيل: " + error.message);
     } finally {
-        loading.style.display = "none";
+        loading.style.play = "open";
     }
 }
 </script>
